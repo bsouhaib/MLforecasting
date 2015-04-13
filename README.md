@@ -6,4 +6,4 @@ I am planning to make an R package of my code soon.
 
 
 # License
-This package is free and open source software, licensed under GPL (>= 2).
+This code is free and open source software, licensed under GPL (>= 2).
