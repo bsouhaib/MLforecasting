@@ -78,7 +78,7 @@ ErrorMatrix <- function(obj, horizon){
 								
 							for(iter in seq(h)){
 														
-								predictions <- mykknn(as.formula(formula.knn), training.data, validation.inputs,k=current.k)[current.k,]
+								predictions <- fastkknn(as.formula(formula.knn), training.data, validation.inputs,k=current.k)[current.k,]
 								stopifnot(all(!is.na(predictions)))
 								
 								validation.inputs <- data.frame(predictions,validation.inputs)
@@ -175,7 +175,7 @@ ErrorMatrix <- function(obj, horizon){
 
 						max.k <- nrow(training.data) -1
 						
-						predictions <- mykknn(as.formula(formula.knn), training.data, validation.data, inc = obj$learner$inc, k = max.k, allk = TRUE)
+						predictions <- fastkknn(as.formula(formula.knn), training.data, validation.data, inc = obj$learner$inc, k = max.k, allk = TRUE)
 						
 						# We can have some NA if obj$learner$inc!=1
 						#stopifnot(all(!is.na(predictions)))
@@ -520,7 +520,7 @@ predict.strategy <- function(obj,learning.results,Xtest=NULL)
 		
 			if(learner$name =="KNN"){
 				
-				predictions <- mykknn(Y1~., complete.data, queries, k=best.model$k)[best.model$k, ]
+				predictions <- fastkknn(Y1~., complete.data, queries, k=best.model$k)[best.model$k, ]
 				
 			}else if(learner$name == "MLP"){
 				all.runs <- lapply(all.models,predict,queries)
@@ -591,7 +591,7 @@ predict.strategy <- function(obj,learning.results,Xtest=NULL)
 						   
 				   for(h in seq(max(set.horizons))){
 						   					   
-						   predictions <- mykknn(formula.knn, complete.data, queries, k=best.model$k)[best.model$k, ]
+						   predictions <- fastkknn(formula.knn, complete.data, queries, k=best.model$k)[best.model$k, ]
 						   
 							if(h %in% set.horizons){
 								forecasts[,h] <- predictions
@@ -606,7 +606,7 @@ predict.strategy <- function(obj,learning.results,Xtest=NULL)
 				   for(h in set.horizons){
 				   					   
 					   formula.knn <- as.formula(paste(paste("Y",h,sep=""),"~",paste(x.variables,collapse="+"),sep=""))
-					   predictions <- mykknn(formula.knn, complete.data, queries, k=best.model$k)[best.model$k, ]
+					   predictions <- fastkknn(formula.knn, complete.data, queries, k=best.model$k)[best.model$k, ]
 					   forecasts[,h] <- predictions
 				   }
 			   }
